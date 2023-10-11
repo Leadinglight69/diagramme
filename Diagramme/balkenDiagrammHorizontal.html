@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    :root {
+      --mainColor:#000;
+      --secondColor:#008AAB;
+      --backgroundColor:#fff;
+    }
+    .vertikalBar .progressRow {
+      display: flex;
+      justify-content: space-between;
+    }
+    .vertikalBar .progressSection {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+    .vertikalBar .progressContainer {
+      width: 40px;
+      height: 200px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .vertikalBar .progressBar1 {
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      background-color: var(--mainColor);
+    }
+    .vertikalBar .progressBar2 {
+      width: 100%;
+      position: absolute;
+      bottom: 0;
+      background-color: var(--secondColor);
+    }
+    .vertikalBar .progressLabel {
+      position: absolute;
+      bottom: 100%;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .vertikalBar p {
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+<main class="vertikalBar">
+<div class="progressRow">
+  <sectin class="progressSection">
+    <div class="progressContainer">
+      <div class="progressBar1" id="progressBar1"></div>
+      <div class="progressLabel" id="progressLabel1">EUR 1.000</div>
+    </div>
+    <p>Systeme wie </p>
+  </sectin>
+  <section class="progressSection">
+    <div class="progressContainer">
+      <div class="progressBar2" id="progressBar2"></div>
+      <div class="progressLabel" id="progressLabel2">EUR 350</div>
+    </div>
+    <p>Das CMS von</p>
+  </section>
+</div>
+</main>
+<script>
+  document.addEventListener('DOMContentLoaded', (event) => {
+    window.addEventListener('scroll', checkPosition);
+    checkPosition();
+  });
+
+  function checkPosition() {
+    let progressBar1 = document.getElementById('progressBar1');
+    let progressBar2 = document.getElementById('progressBar2');
+    let position1 = progressBar1.getBoundingClientRect().top;
+    let position2 = progressBar2.getBoundingClientRect().top;
+    let screenPosition = window.innerHeight;
+
+    if (position1 < screenPosition) {
+      animateProgress('progressBar1', 'progressLabel1', 70, 10); //  hier den gewünschten Prozentsatz und die Geschwindigkeit einsetzten
+      progressBar1.classList.add('already-animated'); // Damit wird verhindert, dass die Animation erneut ausgeführt wird, wenn der Balken erneut sichtbar wird
+    }
+
+    if (position2 < screenPosition) {
+      animateProgress('progressBar2', 'progressLabel2', 50, 20); // hier den gewünschten Prozentsatz und die Geschwindigkeit einsetzten
+      progressBar2.classList.add('already-animated'); // Damit wird verhindert, dass die Animation erneut ausgeführt wird, wenn der Balken erneut sichtbar wird
+    }
+  }
+
+  function animateProgress(barId, labelId, percentage, speed) {
+    let bar = document.getElementById(barId);
+    let label = document.getElementById(labelId);
+
+    // Wenn der Balken bereits animiert wurde, wird die Funktion hier beendet
+    if (bar.classList.contains('already-animated')) {
+      return;
+    }
+
+    let progress = 0;
+    let animation = setInterval(frame, speed);
+
+    function frame() {
+      if (progress >= percentage) {
+        clearInterval(animation);
+      } else {
+        progress++;
+        bar.style.height = progress + '%';
+        label.style.bottom = progress + '%';
+      }
+    }
+  }
+</script>
+</body>
+</html>

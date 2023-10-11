@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <style>
+    :root {
+      --mainColor:#000;
+      --backgroundColor:#fff;
+    }
+    .containerBar{
+      width: 80%;
+    }
+    .progressBar {
+      width: 100%;
+      background-color: var(--backgroundColor);
+     // border: solid 1px var(--mainColor);
+    }
+    .fillBar {
+      height: 30px;
+      background-color: var(--mainColor);
+      color: var(--backgroundColor);
+      text-align: center;
+      justify-content: center;
+      line-height: 30px;
+      font-family: Arial, sans-serif;
+    }
+    span{
+      font-weight:700;
+      justify-items: center;
+    }
+    .textBar{
+      display:flex;
+      justify-content: flex-end;
+    }
+    .bar1 {
+      animation: fillBar1 5s ease-in-out forwards;
+    }
+    .bar2 {
+      animation: fillBar2 3s ease-in-out forwards;
+    }
+    .textBar1 {
+      animation: fillBar1 5s ease-in-out forwards;
+    }
+    .textBar2{
+      animation: fillBar2 3s ease-in-out forwards;
+    }
+    @keyframes fillBar1 {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+    @keyframes fillBar2 {
+      from { width: 0; }
+      to { width: 33%; }
+    }
+  </style>
+</head>
+<body>
+<section class="containerBar">
+  <p class="textBar textBar1">Text</p>
+  <div class="progressBar">
+    <div class="fillBar bar1">
+      <span>CMS von</span>
+    </div>
+  </div>
+</section>
+<section class="containerBar">
+  <p class="textBar textBar2">Text</p>
+  <div class="progressBar">
+    <div class="fillBar bar2">
+      <span>Wordpress, Typo3, Joomla, Drupal</span>
+    </div>
+  </div>
+</section>
+<script>
+  document.addEventListener('scroll', function() {
+    let bar1 = document.querySelector('.bar1');
+    let bar2 = document.querySelector('.bar2');
+    let textBar1 = document.querySelector('.textBar1');
+    let textBar2 = document.querySelector('.textBar2');
+
+    let rect1 = bar1.getBoundingClientRect();
+    let rect2 = bar2.getBoundingClientRect();
+    let rect3 = textBar1.getBoundingClientRect();
+    let rect4 = textBar2.getBoundingClientRect();
+
+    if(rect1.top < window.innerHeight && rect1.bottom >= 0) {
+      bar1.style.animation = 'fillBar1 5s ease-in-out forwards';
+    }
+
+    if(rect2.top < window.innerHeight && rect2.bottom >= 0) {
+      bar2.style.animation = 'fillBar2 3s ease-in-out forwards';
+    }
+    if(rect3.top < window.innerHeight && rect3.bottom >= 0) {
+      textBar1.style.animation = 'fillBar1 5s ease-in-out forwards';
+    }
+
+    if(rect4.top < window.innerHeight && rect4.bottom >= 0) {
+      textBar2.style.animation = 'fillBar2 3s ease-in-out forwards';
+    }
+  });
+</script>
+</body>
+</html>

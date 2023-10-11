@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style>
+    :root {
+        --colorMain: #000;
+        --colorBackground: #fff;
+    }
+    .box{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1px;
+        background-color: var(--colorBackground);
+    }
+    .circularContainer{
+        width: calc(100% / 2 - 1px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+    }
+    .circular_bar{
+        position: relative;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+    .circular_bar::before{
+        content: "";
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        background-color: var(--colorBackground);
+        border-radius: 50%;
+    }
+    .percent{
+        z-index: 10;
+        font-size: 30px;
+    }
+    .textBar{
+        font-size: 20px;
+        margin-bottom: 20px;
+        padding: 15px;
+    }
+    @media screen and (min-width: 768px) {
+        .box{
+            flex-direction: row;
+            gap: 20px
+        }
+        .circularContainer{
+            width: calc(100% / 2 - 20px);
+        }
+        .textBar{
+            padding:0;
+        }
+    }
+    @media screen and (min-width: 1024px) {
+        .circularContainer{
+            width: calc(100% / 4 - 20px);
+        }
+    }
+</style>
+<div class="box">
+    <section class="circularContainer">
+        <div class="circular_bar" style="--color: var(--colorMain)">
+            <div class="percent">0%</div>
+        </div>
+        <span class="textBar">Skill</span>
+    </section>
+    <section class="circularContainer">
+        <div class="circular_bar" style="--color: var(--colorMain)">
+            <div class="percent">0%</div>
+        </div>
+        <span class="textBar">text</span>
+    </section>
+    <section class="circularContainer">
+        <div class="circular_bar" style="--color: var(--colorMain)">
+            <div class="percent">0%</div>
+        </div>
+        <span class="textBar">Vergleich der jähr&shy;lichen</span>
+    </section>
+    <section class="circularContainer">
+        <div class="circular_bar" style="--color: var(--colorMain)">
+            <div class="percent">0%</div>
+        </div>
+        <span class="textBar">Vergleich der jährlichen </span>
+    </section>
+</div>
+<script>
+    let CircularBars = document.querySelectorAll(".circular_bar");
+    let PercentValues = document.querySelectorAll(".percent");
+    let InitialValues = Array(CircularBars.length).fill(0);
+    let finaleValues = [69, 11, 42, 90]; // Zielwert für jeden Kreis
+    let speeds = [100, 200, 50, 20]; // Verschiedene Geschwindigkeiten für jeden Kreis
+    let timers = Array(CircularBars.length).fill(null);
+    function startAnimation(target, index) {
+        timers[index] = setInterval(() => {
+            InitialValues[index] += 1;
+            let color = getComputedStyle(target).getPropertyValue("--color");
+            target.style.background = `conic-gradient(${color} ${InitialValues[index]/100 * 360}deg, #fff 0deg)`;//#e8f0f7
+            PercentValues[index].innerHTML = InitialValues[index] + "%";
+            if(InitialValues[index] >= finaleValues[index]){
+                clearInterval(timers[index]);
+            }
+        }, speeds[index]);
+    }
+    let observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                let index = Array.from(CircularBars).indexOf(entry.target);
+                // Startet sie animation von .circular_bar
+                startAnimation(entry.target, index);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 }); //Der Schwellenwert ist auf 0,2 festgelegt, was bedeutet, dass der Rückruf ausgeführt wird, wenn mindestens 20 % der .circular_bar sichtbar sind
+    CircularBars.forEach(circularBar => observer.observe(circularBar));
+</script>
+</body>
+</html>
